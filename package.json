@@ -3,6 +3,8 @@
   "version": "0.0.1",
   "description": "my first socket.io app",
   "dependencies": {
+    "express": "^4.17.1",
+    "jsdom": "^16.5.1",
     "socket.io": "^0.9.19",
     "socketio-over-nodejs": "^3.0.3"
   }

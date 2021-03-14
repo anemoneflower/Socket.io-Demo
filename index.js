@@ -1,6 +1,12 @@
 const app = require("express")();
 const http = require("http").Server(app);
 const io = require("socket.io").listen(http);
+const port = process.env.PORT || 3000;
+
+// var jsdom = require("jsdom");
+// var JSDOM = jsdom.JSDOM;
+// global.document = new JSDOM(``).window.document;
+// const io = require("socket.io")(http);
 
 app.get("/", (req, res) => {
   res.sendFile(__dirname + "/index.html");
@@ -8,11 +14,24 @@ app.get("/", (req, res) => {
 
 io.on("connection", (socket) => {
   console.log("a user connected");
+  socket.broadcast.emit("hi");
   socket.on("disconnect", () => {
     console.log("user disconnected");
   });
+  socket.on("message", (msg) => {
+    console.log(msg);
+    io.emit("message", msg);
+  });
+  // socket.on("chat message", function (msg) {
+  //   console.log("message: " + msg);
+  //   var item = document.createElement("li");
+  //   item.textContent = msg;
+
+  //   messages.appendChild(item);
+  //   window.scrollTo(0, document.body.scrollHeight);
+  // });
 });
 
-http.listen(3000, () => {
-  console.log("listening on *:3000");
+http.listen(port, () => {
+  console.log(`Socket.IO server running at http://localhost:${port}/`);
 });
